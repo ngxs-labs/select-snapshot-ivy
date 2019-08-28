@@ -24,8 +24,6 @@ export function ViewSelectSnapshot(selectorOrFeature?: any, ...paths: string[]) 
     const def = getComponentDef(target.constructor);
     const factory = def.factory;
 
-    let subscription: Subscription | null = null;
-
     def.factory = () => {
       const instance = factory(def.type);
       const selector = getSelectorFromInstance(
@@ -34,11 +32,9 @@ export function ViewSelectSnapshot(selectorOrFeature?: any, ...paths: string[]) 
         properties.createSelector,
         properties.selectorOrFeature
       );
-      subscription = createStoreSubscription(selector);
+      overrideOnDestroy(def, selector);
       return instance;
     };
-
-    overrideOnDestroy(def, subscription);
   };
 }
 
@@ -58,11 +54,8 @@ function injectViewRef(): ViewRef {
   return directiveInject<ViewRef>(<any>ChangeDetectorRef);
 }
 
-function overrideOnDestroy<T>(def: ComponentDef<T>, subscription: Subscription | null): void {
-  // Override only in case of existing subscription
-  if (subscription === null) {
-    return;
-  }
+function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any): void {
+  const subscription = createStoreSubscription(selector);
 
   // `ngOnDestroy` might not exist
   const onDestroy: (() => void) | null = def.onDestroy;
