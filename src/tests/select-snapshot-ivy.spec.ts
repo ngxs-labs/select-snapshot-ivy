@@ -56,10 +56,7 @@ describe('SelectSnapshot', () => {
   })
   class AnimalsState {
     @Action(AddPanda)
-    addPanda(
-      { getState, patchState }: StateContext<AnimalsStateModel>,
-      { name }: AddPanda
-    ): void {
+    addPanda({ getState, patchState }: StateContext<AnimalsStateModel>, { name }: AddPanda): void {
       const { pandas } = getState();
 
       patchState({

@@ -3,14 +3,14 @@ import {
   ɵComponentType as ComponentType,
   ɵɵdirectiveInject as directiveInject,
   ViewRef,
-  ChangeDetectorRef,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 
 import {
   defineSelectSnapshotProperties,
-  getSelectorFromInstance,
+  getSelectorFromInstance
 } from '../internals/select-snapshot-internals';
 
 /**

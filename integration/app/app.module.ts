@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsSelectSnapshotIvyModule } from '@ngxs/select-snapshot-ivy';
+import { NgxsSelectSnapshotIvyModule } from '@ngxs-labs/select-snapshot-ivy';
 
 import { CounterState } from './counter.state';
 
@@ -15,9 +15,9 @@ import { environment } from '../environments/environment';
     BrowserModule.withServerTransition({ appId: 'select-snapshot-ivy' }),
     NgxsModule.forRoot([CounterState], { developmentMode: !environment.production }),
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
-    NgxsSelectSnapshotIvyModule.forRoot(),
+    NgxsSelectSnapshotIvyModule.forRoot()
   ],
   declarations: [AppComponent],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

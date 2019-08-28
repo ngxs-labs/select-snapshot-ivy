@@ -25,7 +25,7 @@ Import the module into your root application module:
 ```typescript
 import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
-import { NgxsSelectSnapshotIvyModule } from '@ngxs/select-snapshot-ivy';
+import { NgxsSelectSnapshotIvyModule } from '@ngxs-labs/select-snapshot-ivy';
 
 @NgModule({
   imports: [
@@ -87,7 +87,7 @@ import {
   Renderer2,
 } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { ViewSelectSnapshot } from '@ngxs/select-snapshot-ivy';
+import { ViewSelectSnapshot } from '@ngxs-labs/select-snapshot-ivy';
 
 import { CounterState, CounterStateModel, Increment } from './counter.state';
 

@@ -4,7 +4,7 @@
     "baseUrl": "./",
     "rootDir": ".",
     "paths": {
-      "@ngxs/select-snapshot-ivy": ["src/index"]
+      "@ngxs-labs/select-snapshot-ivy": ["src/index"]
     },
     "target": "es5",
     "typeRoots": [

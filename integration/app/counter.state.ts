@@ -11,8 +11,8 @@ export class Increment {
 @State<CounterStateModel>({
   name: 'counter',
   defaults: {
-    counter: 0,
-  },
+    counter: 0
+  }
 })
 export class CounterState {
   @Action(Increment)

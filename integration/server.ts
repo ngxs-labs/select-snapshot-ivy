@@ -30,7 +30,7 @@ app.get('*', async (req, res) => {
   const html = await renderModuleFactory(AppServerModuleNgFactory, {
     url,
     document,
-    extraProviders: [provideModuleMap(LAZY_MODULE_MAP)],
+    extraProviders: [provideModuleMap(LAZY_MODULE_MAP)]
   });
 
   // tslint:disable-next-line:no-console

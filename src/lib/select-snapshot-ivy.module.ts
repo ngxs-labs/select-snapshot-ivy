@@ -10,7 +10,7 @@ export class NgxsSelectSnapshotIvyModule {
 
   static forRoot(): ModuleWithProviders<NgxsSelectSnapshotIvyModule> {
     return {
-      ngModule: NgxsSelectSnapshotIvyModule,
+      ngModule: NgxsSelectSnapshotIvyModule
     };
   }
 }

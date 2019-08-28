@@ -46,7 +46,7 @@ export function defineSelectSnapshotProperties(
     [selectorFnName]: {
       writable: true,
       enumerable: false,
-      configurable: true,
+      configurable: true
     },
     [name]: {
       get() {
@@ -62,13 +62,13 @@ export function defineSelectSnapshotProperties(
         return store.selectSnapshot(selector);
       },
       enumerable: true,
-      configurable: true,
-    },
+      configurable: true
+    }
   });
 
   return {
     selectorFnName,
     createSelector,
-    selectorOrFeature: selectorOrFeature || removeDollarAtTheEnd(name),
+    selectorOrFeature: selectorOrFeature || removeDollarAtTheEnd(name)
   };
 }
