@@ -44,14 +44,10 @@ function getComponentDef<T>(target: ComponentType<T>): ComponentDef<T> {
 
 function createStoreSubscription(selector: any): Subscription {
   const store = directiveInject(Store);
-  const ref = injectViewRef();
-  return store.select(selector).subscribe(() => ref.markForCheck());
-}
-
-function injectViewRef(): ViewRef {
   // `<any>` is needed here because `ChangeDetectorRef` is an abstract class
   // abstract classes cannot be assigned to the `Type<T>`
-  return directiveInject<ViewRef>(<any>ChangeDetectorRef);
+  const ref = directiveInject<ViewRef>(<any>ChangeDetectorRef);
+  return store.select(selector).subscribe(() => ref.markForCheck());
 }
 
 function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any): void {
