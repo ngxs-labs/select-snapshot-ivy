@@ -2,6 +2,10 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "rootDir": ".",
+    "paths": {
+      "@ngxs/select-snapshot-ivy": ["src/index"]
+    },
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
@@ -22,10 +26,5 @@
     "experimentalDecorators": true,
     "noFallthroughCasesInSwitch": true,
     "suppressImplicitAnyIndexErrors": true
-  },
-  "angularCompilerOptions": {
-    "enableIvy": true,
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
   }
 }

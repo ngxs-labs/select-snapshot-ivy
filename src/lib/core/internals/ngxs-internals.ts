@@ -1,6 +1,6 @@
 /**
  * The content of this file originally copied from the `@ngxs/store` as these
- * functions are exposed publicly
+ * functions are NOT exposed publicly
  */
 import { ɵk as NgxsConfig } from '@ngxs/store';
 

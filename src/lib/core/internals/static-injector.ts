@@ -1,4 +1,4 @@
-import { Injector, Injectable } from '@angular/core';
+import { Injector } from '@angular/core';
 import { ɵk as NgxsConfig, Store } from '@ngxs/store';
 
 class NgxsSelectSnapshotModuleIsNotImported extends Error {
@@ -7,27 +7,25 @@ class NgxsSelectSnapshotModuleIsNotImported extends Error {
   }
 }
 
-@Injectable()
-export class StaticInjector {
-  private static injector: Injector | null = null;
+// The algorithm is originally taken from `@angular/core`
+let injector: Injector | null = null;
 
-  constructor(injector: Injector) {
-    StaticInjector.injector = injector;
+function assertInjector() {
+  if (injector === null) {
+    throw new NgxsSelectSnapshotModuleIsNotImported();
   }
+}
 
-  static getConfig(): never | NgxsConfig {
-    if (this.injector === null) {
-      throw new NgxsSelectSnapshotModuleIsNotImported();
-    }
+export function setInjector(parentInjector: Injector): void {
+  injector = parentInjector;
+}
 
-    return this.injector.get<NgxsConfig>(NgxsConfig);
-  }
+export function getConfig(): never | NgxsConfig {
+  assertInjector();
+  return injector!.get<NgxsConfig>(NgxsConfig);
+}
 
-  static getStore(): never | Store {
-    if (this.injector === null) {
-      throw new NgxsSelectSnapshotModuleIsNotImported();
-    }
-
-    return this.injector.get<Store>(Store);
-  }
+export function getStore(): never | Store {
+  assertInjector();
+  return injector!.get<Store>(Store);
 }

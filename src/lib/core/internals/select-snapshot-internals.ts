@@ -1,14 +1,14 @@
 /**
  * The content of this file are internals of the `@ngxs/select-snapshot-ivy` package
  */
-import { StaticInjector } from './static-injector';
+import { getConfig, getStore } from './static-injector';
 import { getPropsArray, propGetter, META_KEY, removeDollarAtTheEnd } from './ngxs-internals';
 
 type CreateSelectorFactory = (selectorOrFeature: any) => any;
 
 function createSelectorFactory(paths: string[]): CreateSelectorFactory {
   return (selectorOrFeature: any) => {
-    const config = StaticInjector.getConfig();
+    const config = getConfig();
 
     if (typeof selectorOrFeature === 'string') {
       const propsArray = getPropsArray(selectorOrFeature, paths);
@@ -58,7 +58,7 @@ export function defineSelectSnapshotProperties(
         );
         // Don't use the `directiveInject` here as it works ONLY
         // during view creation
-        const store = StaticInjector.getStore();
+        const store = getStore();
         return store.selectSnapshot(selector);
       },
       enumerable: true,
