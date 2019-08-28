@@ -10,7 +10,7 @@ class NgxsSelectSnapshotModuleIsNotImported extends Error {
 // The algorithm is originally taken from `@angular/core`
 let injector: Injector | null = null;
 
-function assertDefined<T>(actual: T | null | undefined) {
+function assertDefined<T>(actual: T | null | undefined): never | void {
   if (actual == null) {
     throw new NgxsSelectSnapshotModuleIsNotImported();
   }
