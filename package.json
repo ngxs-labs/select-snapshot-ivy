@@ -1,0 +1,88 @@
+{
+  "name": "select-snapshot-ivy",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngxs-labs/select-snapshot-ivy.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "e2e": "ng e2e",
+    "// - PROVISIONING": "Provisioning scripts",
+    "select-snapshot-ivy:lint": "ng lint select-snapshot-ivy",
+    "select-snapshot-ivy:test": "ng test --runInBand",
+    "select-snapshot-ivy:build": "ts-node ./tools/build && ts-node ./tools/copy-readme",
+    "// - CI": "CI pipelines",
+    "ci:pipelines": "npm-run-all select-snapshot-ivy:*",
+    "// - UTILS": "Utility scripts",
+    "bump": "ts-node ./tools/bump",
+    "create-project": "ts-node ./tools/create-project",
+    "format": "prettier src/**/*.ts --write"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^8.2.3",
+    "@angular/common": "^8.2.3",
+    "@angular/compiler": "^8.2.3",
+    "@angular/core": "^8.2.3",
+    "@angular/platform-browser": "^8.2.3",
+    "@angular/platform-browser-dynamic": "^8.2.3",
+    "@angular/platform-server": "^8.2.3",
+    "@ngxs/store": "^3.5.0",
+    "core-js": "^3.2.1",
+    "rxjs": "^6.5.2",
+    "zone.js": "^0.10.2"
+  },
+  "devDependencies": {
+    "@angular-builders/jest": "^8.2.0",
+    "@angular-devkit/build-angular": "^0.803.1",
+    "@angular-devkit/build-ng-packagr": "^0.803.1",
+    "@angular/cli": "^8.3.1",
+    "@angular/compiler-cli": "^8.2.3",
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-angular": "^8.1.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.2",
+    "@types/semver": "^6.0.1",
+    "codelyzer": "^5.1.0",
+    "colors": "^1.3.3",
+    "husky": "^3.0.4",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.2.5",
+    "ng-packagr": "^5.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.18.2",
+    "semver": "^6.3.0",
+    "ts-node": "^8.3.0",
+    "tsickle": "^0.37.0",
+    "tslib": "^1.10.0",
+    "tslint": "^5.19.0",
+    "tslint-sonarts": "^1.9.0",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "semi": true,
+    "endOfLine": "lf",
+    "tabWidth": 2,
+    "printWidth": 100,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "arrowParens": "avoid",
+    "singleQuote": true
+  }
+}
