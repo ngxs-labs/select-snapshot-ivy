@@ -1,9 +1,9 @@
 import { Injector } from '@angular/core';
 import { ɵk as NgxsConfig, Store } from '@ngxs/store';
 
-class NgxsSelectSnapshotModuleIsNotImported extends Error {
+class NgxsSelectSnapshotIvyModuleIsNotImported extends Error {
   constructor() {
-    super(`You've forgotten to import "NgxsSelectSnapshotModule"!`);
+    super(`You have import the "NgxsSelectSnapshotIvyModule" before using decorators.`);
   }
 }
 
@@ -12,7 +12,7 @@ let injector: Injector | null = null;
 
 function assertDefined<T>(actual: T | null | undefined): never | void {
   if (actual == null) {
-    throw new NgxsSelectSnapshotModuleIsNotImported();
+    throw new NgxsSelectSnapshotIvyModuleIsNotImported();
   }
 }
 
