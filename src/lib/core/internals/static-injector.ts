@@ -10,8 +10,8 @@ class NgxsSelectSnapshotModuleIsNotImported extends Error {
 // The algorithm is originally taken from `@angular/core`
 let injector: Injector | null = null;
 
-function assertInjector() {
-  if (injector === null) {
+function assertDefined<T>(actual: T | null | undefined) {
+  if (actual == null) {
     throw new NgxsSelectSnapshotModuleIsNotImported();
   }
 }
@@ -21,11 +21,11 @@ export function setInjector(parentInjector: Injector): void {
 }
 
 export function getConfig(): never | NgxsConfig {
-  assertInjector();
+  assertDefined(injector);
   return injector!.get<NgxsConfig>(NgxsConfig);
 }
 
 export function getStore(): never | Store {
-  assertInjector();
+  assertDefined(injector);
   return injector!.get<Store>(Store);
 }
