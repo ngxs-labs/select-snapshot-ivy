@@ -9,10 +9,8 @@ import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 
 import {
+  defineSelectSnapshotProperties,
   getSelectorFromInstance,
-  resolveProperties,
-  defineSelectorFnName,
-  defineSnapshotSelectorGetter,
 } from '../internals/select-snapshot-internals';
 
 /**
@@ -21,17 +19,7 @@ import {
  */
 export function ViewSelectSnapshot(selectorOrFeature?: any, ...paths: string[]) {
   return (target: any, name: string) => {
-    const properties = resolveProperties(name, paths, selectorOrFeature);
-
-    defineSelectorFnName(target, properties.selectorFnName);
-
-    defineSnapshotSelectorGetter(
-      target,
-      name,
-      properties.selectorFnName,
-      properties.createSelector,
-      selectorOrFeature
-    );
+    const properties = defineSelectSnapshotProperties(selectorOrFeature, paths, target, name);
 
     const def = getComponentDef(target.constructor);
     const factory = def.factory;

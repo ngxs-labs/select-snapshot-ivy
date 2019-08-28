@@ -21,39 +21,6 @@ function createSelectorFactory(paths: string[]): CreateSelectorFactory {
   };
 }
 
-export function defineSelectorFnName(target: any, selectorFnName: string) {
-  Object.defineProperty(target, selectorFnName, {
-    writable: true,
-    enumerable: false,
-    configurable: true,
-  });
-}
-
-export function defineSnapshotSelectorGetter(
-  target: any,
-  name: string,
-  selectorFnName: string,
-  createSelector: CreateSelectorFactory,
-  selectorOrFeature: any
-) {
-  Object.defineProperty(target, name, {
-    get() {
-      const selector = getSelectorFromInstance(
-        this,
-        selectorFnName,
-        createSelector,
-        selectorOrFeature
-      );
-      // Don't use the `directiveInject` here as it works ONLY
-      // during view creation
-      const store = StaticInjector.getStore();
-      return store.selectSnapshot(selector);
-    },
-    enumerable: true,
-    configurable: true,
-  });
-}
-
 export function getSelectorFromInstance(
   instance: any,
   selectorFnName: string,
@@ -66,10 +33,42 @@ export function getSelectorFromInstance(
 /**
  * Just a reusable function between 2 decorators
  */
-export function resolveProperties(name: string, paths: string[], selectorOrFeature: any) {
+export function defineSelectSnapshotProperties(
+  selectorOrFeature: any,
+  paths: string[],
+  target: any,
+  name: string
+) {
+  const selectorFnName = `__${name}__selector`;
+  const createSelector = createSelectorFactory(paths);
+
+  Object.defineProperties(target, {
+    [selectorFnName]: {
+      writable: true,
+      enumerable: false,
+      configurable: true,
+    },
+    [name]: {
+      get() {
+        const selector = getSelectorFromInstance(
+          this,
+          selectorFnName,
+          createSelector,
+          selectorOrFeature
+        );
+        // Don't use the `directiveInject` here as it works ONLY
+        // during view creation
+        const store = StaticInjector.getStore();
+        return store.selectSnapshot(selector);
+      },
+      enumerable: true,
+      configurable: true,
+    },
+  });
+
   return {
-    selectorFnName: `__${name}__selector`,
-    createSelector: createSelectorFactory(paths),
-    selectorOrFeature: selectorOrFeature || removeDollarAtTheEnd(name)
+    selectorFnName,
+    createSelector,
+    selectorOrFeature: selectorOrFeature || removeDollarAtTheEnd(name),
   };
 }
