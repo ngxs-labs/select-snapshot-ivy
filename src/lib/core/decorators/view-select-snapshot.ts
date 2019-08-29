@@ -18,28 +18,51 @@ import {
  * and directives can inject `ChangeDetectorRef`
  */
 export function ViewSelectSnapshot(selectorOrFeature?: any, ...paths: string[]) {
-  return (target: Object, name: string) => {
-    const properties = defineSelectSnapshotProperties(selectorOrFeature, paths, target, name);
-
-    const def = getComponentDef(target.constructor);
-    const factory = def.factory;
-
-    def.factory = () => {
-      const instance = factory(def.type);
-      const selector = getSelectorFromInstance(
-        instance,
-        properties.selectorFnName,
-        properties.createSelector,
-        properties.selectorOrFeature
+  return (target: any, name: string) => {
+    // If the `ngComponentDef` property defined then it means we're
+    // running in the AOT mode
+    if (target.constructor.ngComponentDef) {
+      decorateDirectiveProperty(selectorOrFeature, paths, target, name);
+    } else {
+      // That means that application is running in the JIT mode. TypeScript invokes
+      // property decorators first before class decorators. That means that the `ngComponentDef`
+      // property is not available yet
+      // NOTE: This is safe! Because that micro task is scheduled before
+      // the application initialized.
+      // Angular runs `APP_INITIALIZER` promise factories after that
+      Promise.resolve().then(() =>
+        decorateDirectiveProperty(selectorOrFeature, paths, target, name)
       );
-      overrideOnDestroy(def, selector, instance);
-      return instance;
-    };
+    }
   };
 }
 
-function getComponentDef<T>(target: Function): ComponentDef<T> {
-  return (<ComponentType<T>>target).ngComponentDef;
+function decorateDirectiveProperty(
+  selectorOrFeature: any,
+  paths: string[],
+  target: any,
+  name: string
+): void {
+  const properties = defineSelectSnapshotProperties(selectorOrFeature, paths, target, name);
+
+  const def = getComponentDef(target.constructor);
+  const factory = def.factory;
+
+  def.factory = () => {
+    const instance = factory(def.type);
+    const selector = getSelectorFromInstance(
+      instance,
+      properties.selectorFnName,
+      properties.createSelector,
+      properties.selectorOrFeature
+    );
+    overrideOnDestroy(def, selector, instance);
+    return instance;
+  };
+}
+
+function getComponentDef<T>(type: ComponentType<T>): ComponentDef<T> {
+  return type.ngComponentDef;
 }
 
 function createStoreSubscription(selector: any): Subscription {
@@ -50,7 +73,7 @@ function createStoreSubscription(selector: any): Subscription {
   return store.select(selector).subscribe(() => ref.markForCheck());
 }
 
-function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any, instance: any): void {
+function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any, instance: unknown): void {
   const subscription = createStoreSubscription(selector);
 
   // `ngOnDestroy` might not exist
