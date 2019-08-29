@@ -24,12 +24,13 @@ export function ViewSelectSnapshot(selectorOrFeature?: any, ...paths: string[]) 
     if (target.constructor.ngComponentDef) {
       decorateDirectiveProperty(selectorOrFeature, paths, target, name);
     } else {
-      // That means that application is running in the JIT mode. TypeScript invokes
+      // This means that application is running in the JIT mode. TypeScript invokes
       // property decorators first before class decorators. That means that the `ngComponentDef`
       // property is not available yet
       // NOTE: This is safe! Because that micro task is scheduled before
       // the application initialized.
-      // Angular runs `APP_INITIALIZER` promise factories after that
+      // Angular waits for the completion of the `APP_INITIALIZER`
+      // promise factories later
       Promise.resolve().then(() =>
         decorateDirectiveProperty(selectorOrFeature, paths, target, name)
       );
@@ -56,7 +57,7 @@ function decorateDirectiveProperty(
       properties.createSelector,
       properties.selectorOrFeature
     );
-    overrideOnDestroy(def, selector, instance);
+    overrideOnDestroy(def, selector);
     return instance;
   };
 }
@@ -73,14 +74,15 @@ function createStoreSubscription(selector: any): Subscription {
   return store.select(selector).subscribe(() => ref.markForCheck());
 }
 
-function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any, instance: unknown): void {
+function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any): void {
   const subscription = createStoreSubscription(selector);
-
-  // `ngOnDestroy` might not exist
   const onDestroy: (() => void) | null = def.onDestroy;
-  def.onDestroy = () => {
-    // If the instance actually has `ngOnDestroy` then call the original one
-    onDestroy && onDestroy.call(instance);
+
+  // Capture context. `onDestroy` is invoked by Angular on the top level
+  // already with `onDestroy.call(context)`
+  def.onDestroy = function() {
+    // Invoke the original `ngOnDestroy` if it exists
+    onDestroy && onDestroy.call(this);
     // Unsubscribe to avoid potentional memory leaks
     subscription.unsubscribe();
   };

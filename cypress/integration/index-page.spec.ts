@@ -6,24 +6,24 @@ describe('Index page', () => {
   beforeEach(() => index.navigateTo());
 
   it('should contain ivy enabled text', () => {
-    cy.get('h1')
+    cy.get('span.ivy-enabled')
       .invoke('text')
-      .should('contain', 'Ivy enabled: true');
+      .should('contain', 'Ivy is enabled in this application');
   });
 
-  it('should contain pre element', () => {
-    cy.get('pre')
+  it('should contain counter h2', () => {
+    cy.get('h2.counter')
       .invoke('text')
-      .should('contain', '"counter": 0');
+      .should('contain', 'Counter is 0');
   });
 
   it('should increment counter on the button click', () => {
-    cy.get('button')
+    cy.get('button.increment')
       .click()
       .click()
       .click()
-      .get('pre')
+      .get('h2.counter')
       .invoke('text')
-      .should('contain', '"counter": 3');
+      .should('contain', 'Counter is 3');
   });
 });

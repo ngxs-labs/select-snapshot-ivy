@@ -7,6 +7,7 @@ import { NgxsSelectSnapshotIvyModule } from '@ngxs-labs/select-snapshot-ivy';
 import { CounterState } from './counter.state';
 
 import { AppComponent } from './app.component';
+import { CounterComponent } from './counter/counter.component';
 
 import { environment } from '../environments/environment';
 
@@ -17,7 +18,7 @@ import { environment } from '../environments/environment';
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     NgxsSelectSnapshotIvyModule.forRoot()
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, CounterComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

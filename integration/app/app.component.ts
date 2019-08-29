@@ -11,7 +11,7 @@ import {
 import { Store } from '@ngxs/store';
 import { ViewSelectSnapshot } from '@ngxs-labs/select-snapshot-ivy';
 
-import { CounterState, CounterStateModel, Increment } from './counter.state';
+import { CounterState, Increment } from './counter.state';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +20,13 @@ import { CounterState, CounterStateModel, Increment } from './counter.state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-  @ViewSelectSnapshot(CounterState) counter!: CounterStateModel;
+  @ViewSelectSnapshot(CounterState.getCounter) counter!: number;
 
   @ViewChild('button', { static: true }) button!: ElementRef<HTMLButtonElement>;
 
   ivyEnabled = ivyEnabled;
+
+  counterComponentShown = true;
 
   constructor(private zone: NgZone, private renderer: Renderer2, private store: Store) {}
 

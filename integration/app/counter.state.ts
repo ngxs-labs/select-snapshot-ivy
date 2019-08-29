@@ -1,4 +1,4 @@
-import { State, Action, StateContext } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 export interface CounterStateModel {
   counter: number;
@@ -15,6 +15,11 @@ export class Increment {
   }
 })
 export class CounterState {
+  @Selector()
+  static getCounter(state: CounterStateModel): number {
+    return state.counter;
+  }
+
   @Action(Increment)
   increment(ctx: StateContext<CounterStateModel>) {
     const counter = ctx.getState().counter + 1;

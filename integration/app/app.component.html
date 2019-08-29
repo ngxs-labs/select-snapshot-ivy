@@ -1,4 +1,4 @@
-<h1>Ivy enabled: {{ ivyEnabled }}</h1>
-<pre>Counter state: {{ counter | json }}</pre>
-
-<button #button>Increment outside of Angular's zone</button>
+<app-counter [ivyEnabled]="ivyEnabled" [counter]="counter" *ngIf="counterComponentShown"></app-counter>
+<button class="increment" #button>Increment outside of Angular's zone</button>
+<h3>Click the button above and you'll notice that "@Input()" property gets updated!</h3>
+<button (click)="counterComponentShown = !counterComponentShown">Toggle counter component</button>
