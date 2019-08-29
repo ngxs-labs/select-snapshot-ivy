@@ -18,7 +18,7 @@ import {
  * and directives can inject `ChangeDetectorRef`
  */
 export function ViewSelectSnapshot(selectorOrFeature?: any, ...paths: string[]) {
-  return (target: any, name: string) => {
+  return (target: Object, name: string) => {
     const properties = defineSelectSnapshotProperties(selectorOrFeature, paths, target, name);
 
     const def = getComponentDef(target.constructor);
@@ -32,14 +32,14 @@ export function ViewSelectSnapshot(selectorOrFeature?: any, ...paths: string[]) 
         properties.createSelector,
         properties.selectorOrFeature
       );
-      overrideOnDestroy(def, selector);
+      overrideOnDestroy(def, selector, instance);
       return instance;
     };
   };
 }
 
-function getComponentDef<T>(target: ComponentType<T>): ComponentDef<T> {
-  return target.ngComponentDef;
+function getComponentDef<T>(target: Function): ComponentDef<T> {
+  return (<ComponentType<T>>target).ngComponentDef;
 }
 
 function createStoreSubscription(selector: any): Subscription {
@@ -50,14 +50,14 @@ function createStoreSubscription(selector: any): Subscription {
   return store.select(selector).subscribe(() => ref.markForCheck());
 }
 
-function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any): void {
+function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any, instance: any): void {
   const subscription = createStoreSubscription(selector);
 
   // `ngOnDestroy` might not exist
   const onDestroy: (() => void) | null = def.onDestroy;
   def.onDestroy = () => {
     // If the instance actually has `ngOnDestroy` then call the original one
-    onDestroy && onDestroy();
+    onDestroy && onDestroy.call(instance);
     // Unsubscribe to avoid potentional memory leaks
     subscription.unsubscribe();
   };
