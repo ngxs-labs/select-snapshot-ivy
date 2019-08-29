@@ -6,9 +6,11 @@
 
 > Flexibile decorator, an alternative for the `@Select` but selects a snapshot of the state.
 
+[![Build Status](https://travis-ci.org/ngxs-labs/select-snapshot-ivy.svg?branch=master)](https://travis-ci.org/ngxs-labs/select-snapshot-ivy)
+
 # Disclaimer
 
-This package is compatible only with Ivy and only if AOT is enabled via `"aot": true`.
+This package is compatible only with Ivy!
 
 ## 📦 Install
 

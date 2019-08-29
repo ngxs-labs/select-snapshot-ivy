@@ -12,6 +12,11 @@ addons:
     packages:
       - libgconf-2-4
 
+cache:
+  directories:
+    # Cache Cypress binary
+    - ~/.cache
+
 install:
   - yarn --pure-lockfile --non-interactive
 
