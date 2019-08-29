@@ -12,7 +12,7 @@
     "ts-node": "ts-node",
     "// - APPS": "Run Apps in dev and with packaged modules",
     "serve:integration": "ng serve --prod --project integration",
-    "serve:integration:static": "angular-http-server --path dist -p 4200 --silent",
+    "serve:integration:static": "angular-http-server --path dist-integration -p 4200 --silent",
     "serve:integration:ssr": "yarn ts-node integration/server",
     "build": "ng build",
     "build:integration": "ng run integration:build:production",

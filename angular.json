@@ -56,7 +56,7 @@
               "polyfills": "integration/polyfills.ts",
               "tsConfig": "integration/tsconfig.app.json",
               "preserveSymlinks": true,
-              "aot": true,
+              "aot": false,
               "assets": [
                 "integration/assets"
               ]

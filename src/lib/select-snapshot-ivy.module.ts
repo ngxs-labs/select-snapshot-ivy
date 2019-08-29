@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, Self, Injector } from '@angular/core';
+import { NgModule, ModuleWithProviders, Injector } from '@angular/core';
 
 import { setInjector } from './core/internals/static-injector';
 
