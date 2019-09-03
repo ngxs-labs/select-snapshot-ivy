@@ -1,6 +1,8 @@
 import {
   ɵComponentDef as ComponentDef,
   ɵComponentType as ComponentType,
+  ɵDirectiveType as DirectiveType,
+  ɵDirectiveDef as DirectiveDef,
   ɵɵdirectiveInject as directiveInject,
   ViewRef,
   ChangeDetectorRef
@@ -46,7 +48,7 @@ function decorateDirectiveProperty(
 ): void {
   const properties = defineSelectSnapshotProperties(selectorOrFeature, paths, target, name);
 
-  const def = getComponentDef(target.constructor);
+  const def = getDef(target.constructor);
   const factory = def.factory;
 
   def.factory = () => {
@@ -62,8 +64,8 @@ function decorateDirectiveProperty(
   };
 }
 
-function getComponentDef<T>(type: ComponentType<T>): ComponentDef<T> {
-  return type.ngComponentDef;
+function getDef<T>(type: ComponentType<T> | DirectiveType<T>): ComponentDef<T> | DirectiveDef<T> {
+  return (type as ComponentType<T>).ngComponentDef || (type as DirectiveType<T>).ngDirectiveDef;
 }
 
 function createStoreSubscription(selector: any): Subscription {
@@ -74,7 +76,7 @@ function createStoreSubscription(selector: any): Subscription {
   return store.select(selector).subscribe(() => ref.markForCheck());
 }
 
-function overrideOnDestroy<T>(def: ComponentDef<T>, selector: any): void {
+function overrideOnDestroy<T>(def: ComponentDef<T> | DirectiveDef<T>, selector: any): void {
   const subscription = createStoreSubscription(selector);
   const onDestroy: (() => void) | null = def.onDestroy;
 
